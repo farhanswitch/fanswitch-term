@@ -56,6 +56,8 @@ export function Terminal({
     { id: nextId(), type: "system", content: WELCOME_TEXT, isStreaming: true },
   ]);
   const [input, setInput] = useState("");
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isStreaming, setIsStreaming] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -98,9 +100,13 @@ export function Terminal({
       if (trimmed === "/clear") {
         setLogs([]);
         setInput("");
+        setHistoryIndex(-1);
         setIsStreaming(false);
         return;
       }
+
+      setHistory((prev) => [...prev, trimmed]);
+      setHistoryIndex(-1);
 
       let outputContent: string;
       let outputType: "output" | "error" = "output";
@@ -144,12 +150,32 @@ export function Terminal({
       setLogs((prev) => [...prev, inputLog, outputLog]);
       setInput("");
     },
-    [educationContent, projectsContent, bioContent, handleStreamComplete],
+    [educationContent, projectsContent, bioContent, handleStreamComplete, history, historyIndex],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       executeCommand(input);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (history.length > 0) {
+        const nextIndex =
+          historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
+        setHistoryIndex(nextIndex);
+        setInput(history[nextIndex]);
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex !== -1) {
+        const nextIndex = historyIndex + 1;
+        if (nextIndex >= history.length) {
+          setHistoryIndex(-1);
+          setInput("");
+        } else {
+          setHistoryIndex(nextIndex);
+          setInput(history[nextIndex]);
+        }
+      }
     }
   };
 
