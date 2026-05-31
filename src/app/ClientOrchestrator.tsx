@@ -1,7 +1,8 @@
 'use client';
+
 import { useState } from 'react';
-import { TicTacToe } from '../components/TicTacToe';
-import { Terminal } from '../components/Terminal';
+import { Board } from '@/components/tic-tac-toe/board';
+import { Terminal } from '@/components/terminal/terminal';
 
 interface ClientOrchestratorProps {
   educationContent: string;
@@ -10,14 +11,28 @@ interface ClientOrchestratorProps {
 
 export default function ClientOrchestrator({ educationContent, projectsContent }: ClientOrchestratorProps) {
   const [isGameCompleted, setIsGameCompleted] = useState(false);
+  const [isFading, setIsFading] = useState(false);
+
+  const handleGameComplete = () => {
+    setIsFading(true);
+    setTimeout(() => {
+      setIsGameCompleted(true);
+    }, 500);
+  };
+
+  if (isGameCompleted) {
+    return (
+      <div className="animate-in fade-in duration-700">
+        <Terminal educationContent={educationContent} projectsContent={projectsContent} />
+      </div>
+    );
+  }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px' }}>
-      {!isGameCompleted ? (
-        <TicTacToe onComplete={() => setIsGameCompleted(true)} />
-      ) : (
-        <Terminal educationContent={educationContent} projectsContent={projectsContent} />
-      )}
+    <div
+      className={`transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
+    >
+      <Board onComplete={handleGameComplete} />
     </div>
   );
 }

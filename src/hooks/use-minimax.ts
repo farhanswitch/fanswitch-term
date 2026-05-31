@@ -120,11 +120,22 @@ export function useMinimax() {
     setResult(null);
   }, []);
 
+  const triggerComputerFirst = useCallback(() => {
+    const emptyBoard: BoardState = Array(9).fill(null);
+    setBoard(emptyBoard);
+    setIsXNext(false);
+    setResult(null);
+    setTimeout(() => {
+      makeComputerMove([...emptyBoard]);
+    }, 300);
+  }, [makeComputerMove]);
+
   return {
     board,
     isXNext,
     result,
     handlePlayerMove,
-    resetGame
+    resetGame,
+    triggerComputerFirst,
   };
 }
