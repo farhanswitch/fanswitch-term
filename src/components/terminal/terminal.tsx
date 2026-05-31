@@ -11,6 +11,7 @@ import { TypewriterText } from "./output";
 import { QuickMenu } from "./quick-menu";
 import { SocialsOutput } from "./socials-output";
 import { CvOutput } from "./cv-output";
+import { SudoRmOutput } from "./sudo-rm";
 
 interface TerminalLog {
   id: string;
@@ -132,6 +133,21 @@ export function Terminal({
         case "/socials":
           outputContent = "# Socials & Contact";
           richContent = <SocialsOutput onComplete={handleStreamComplete} />;
+          break;
+        case "sudo rm -rf /":
+        case "/sudo rm -rf /":
+        case "sudo rm -rf":
+          outputContent = "> Initiating override...";
+          richContent = (
+            <SudoRmOutput
+              onComplete={() => {
+                setLogs([]);
+                setInput("");
+                setHistoryIndex(-1);
+                setIsStreaming(false);
+              }}
+            />
+          );
           break;
         default:
           outputContent = `Command not found: "${trimmed}"\nType /help to see available commands.`;
