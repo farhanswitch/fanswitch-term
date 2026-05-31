@@ -13,6 +13,7 @@ import { SocialsOutput } from "./socials-output";
 import { CvOutput } from "./cv-output";
 import { SudoRmOutput } from "./sudo-rm";
 import { MatrixOutput } from "./matrix-output";
+import { ThemeStyles } from "./theme-styles";
 
 interface TerminalLog {
   id: string;
@@ -43,13 +44,16 @@ const HELP_TEXT = `Available commands:
   /socials       — Social links & contact
   /clear         — Clear terminal history
 
-Easter Eggs:
+Extras:
   /matrix        — Initialize secure proxy routing...
   /sudo rm -rf / — Do not type this. Seriously.
+  /coffee        — I'm a teapot
+  /whoami        — Print current user identity
+  /theme         — Change terminal theme (e.g., /theme ubuntu, /theme cyberpunk, /theme dracula, /theme default)
 
 Tip: Click the quick buttons below or type a command.`;
 
-const WELCOME_TEXT = `> Welcome to the interactive portfolio terminal.
+const WELCOME_TEXT = `> Welcome to the fanswitch terminal.
 > Type /help for available commands or use the quick menu below.
 > ─────────────────────────────────────────`;
 
@@ -64,6 +68,7 @@ export function Terminal({
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  const [theme, setTheme] = useState<string>("default");
   const [isStreaming, setIsStreaming] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -159,7 +164,51 @@ export function Terminal({
           outputContent = "> Initializing secure proxy routing...";
           richContent = <MatrixOutput onComplete={handleStreamComplete} />;
           break;
+        case "/coffee":
+        case "/brew":
+          outputContent = `    (  )   (   )  )
+     ) (   )  (  (
+     ( )  (    ) )
+     _____________
+    <_____________> ___
+    |             |/ _ \\
+    |               | | |
+    |               |_| |
+ ___|             |\\___/
+/    \\___________/    \\
+\\_____________________/
+
+HTTP Error 418: I am a teapot.
+I cannot brew coffee, but I can architect highly scalable microservices.`;
+          break;
+        case "/whoami":
+          outputContent =
+            "You are a visitor with excellent taste in portfolios, currently inspecting the profile of your next great Backend Engineer.";
+          break;
         default:
+          if (trimmed.startsWith("/theme")) {
+            const args = trimmed.split(" ");
+            if (args.length === 1) {
+              outputContent =
+                "Usage: /theme <name>\nAvailable themes: ubuntu, cyberpunk, dracula, light, default";
+              break;
+            }
+            const newTheme = args[1];
+            if (newTheme === "light") {
+              outputContent =
+                "Error: Backend developers do not support light mode. Reverting.";
+              break;
+            }
+            if (
+              ["ubuntu", "cyberpunk", "dracula", "default"].includes(newTheme)
+            ) {
+              setTheme(newTheme);
+              outputContent = `Theme successfully updated to '${newTheme}'.`;
+              break;
+            }
+            outputContent = `Theme not found: "${newTheme}"\nAvailable themes: ubuntu, cyberpunk, dracula, default`;
+            break;
+          }
           outputContent = `Command not found: "${trimmed}"\nType /help to see available commands.`;
           outputType = "error";
       }
@@ -176,7 +225,14 @@ export function Terminal({
       setLogs((prev) => [...prev, inputLog, outputLog]);
       setInput("");
     },
-    [educationContent, projectsContent, bioContent, handleStreamComplete, history, historyIndex],
+    [
+      educationContent,
+      projectsContent,
+      bioContent,
+      handleStreamComplete,
+      history,
+      historyIndex,
+    ],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -186,7 +242,9 @@ export function Terminal({
       e.preventDefault();
       if (history.length > 0) {
         const nextIndex =
-          historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
+          historyIndex === -1
+            ? history.length - 1
+            : Math.max(0, historyIndex - 1);
         setHistoryIndex(nextIndex);
         setInput(history[nextIndex]);
       }
@@ -221,13 +279,13 @@ export function Terminal({
       {/* Title bar */}
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-zinc-800/60 bg-zinc-950/90 backdrop-blur-sm shrink-0">
         <div className="flex gap-1.5">
-          {/* Tombol Close (Merah) */}
+          {/* Close Button */}
           <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors duration-150 cursor-pointer" />
 
-          {/* Tombol Minimize (Kuning) */}
+          {/* Minimize Button */}
           <div className="w-3 h-3 rounded-full bg-amber-500 hover:bg-amber-600 transition-colors duration-150 cursor-pointer" />
 
-          {/* Tombol Maximize/Full Screen (Hijau) */}
+          {/* Maximize/Full Screen Button */}
           <div className="w-3 h-3 rounded-full bg-emerald-500 hover:bg-emerald-600 transition-colors duration-150 cursor-pointer" />
         </div>
         <span className="text-s font-semibold text-zinc-500 ml-2 tracking-wide">
@@ -287,8 +345,8 @@ export function Terminal({
                       if (log.richContent) {
                         setLogs((prev) =>
                           prev.map((l) =>
-                            l.id === log.id ? { ...l, isStreaming: false } : l
-                          )
+                            l.id === log.id ? { ...l, isStreaming: false } : l,
+                          ),
                         );
                       } else {
                         handleStreamComplete();
@@ -355,6 +413,9 @@ export function Terminal({
 
       {/* Quick macro menu */}
       <QuickMenu onCommand={handleQuickCommand} disabled={isStreaming} />
+
+      {/* Dynamic Theme Injector */}
+      <ThemeStyles theme={theme} />
     </div>
   );
 }
