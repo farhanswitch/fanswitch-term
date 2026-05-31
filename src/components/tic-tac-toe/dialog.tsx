@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Dialog,
@@ -7,24 +7,24 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface GameOverDialogProps {
   open: boolean;
-  result: 'X' | 'O' | 'draw' | null;
+  result: "X" | "O" | "draw" | null;
   onClose: () => void;
 }
 
 export function GameOverDialog({ open, result, onClose }: GameOverDialogProps) {
-  const isPlayerWin = result === 'X';
-  const isDraw = result === 'draw';
+  const isPlayerWin = result === "X";
+  const isDraw = result === "draw";
 
   const title = isPlayerWin
-    ? 'Impossible... Almost.'
+    ? "Impossible... Almost."
     : isDraw
       ? "A Draw? That's the Best You'll Get."
-      : 'You Lost. As Expected.';
+      : "You Lost. As Expected.";
 
   const description = isPlayerWin
     ? "Okay, you beat a minimax algorithm. Impressive. But can you ship production code at 2 AM? That's where I come in."
@@ -37,11 +37,16 @@ export function GameOverDialog({ open, result, onClose }: GameOverDialogProps) {
     : "Let's Talk — I Just Lost to Your Portfolio";
 
   const mailtoHref = `mailto:your@email.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-    "Hi,\n\nI just played the tic-tac-toe on your portfolio and I'm impressed. Let's chat about working together.\n\nBest,"
+    "Hi,\n\nI just played the tic-tac-toe on your portfolio and I'm impressed. Let's chat about working together.\n\nBest,",
   )}`;
 
   return (
-    <Dialog open={open} onOpenChange={(val) => { if (!val) onClose(); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => {
+        if (!val) onClose();
+      }}
+    >
       <DialogContent
         className="
           bg-zinc-950 border border-zinc-800 text-zinc-100
@@ -73,7 +78,7 @@ export function GameOverDialog({ open, result, onClose }: GameOverDialogProps) {
               active:scale-[0.97]
             "
           >
-            <span>✉</span>
+            <span className="text-2xl -mt-2">✉</span>
             Hire Me
           </a>
           <Button

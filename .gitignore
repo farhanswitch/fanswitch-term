@@ -43,6 +43,7 @@ next-env.d.ts
 
 # others
 tictactoe/
+public/test/
 
 # agents
 .antigravitycli/

@@ -3,16 +3,17 @@ import path from 'path';
 import ClientOrchestrator from './ClientOrchestrator';
 
 export default function Page() {
-  const eduPath = path.join(process.cwd(), 'src/content/education.md');
-  const projPath = path.join(process.cwd(), 'src/content/projects.md');
+  const contentDir = path.join(process.cwd(), 'src/content');
 
-  const educationContent = fs.readFileSync(eduPath, 'utf8');
-  const projectsContent = fs.readFileSync(projPath, 'utf8');
+  const educationContent = fs.readFileSync(path.join(contentDir, 'education.md'), 'utf8');
+  const projectsContent = fs.readFileSync(path.join(contentDir, 'projects.md'), 'utf8');
+  const bioContent = fs.readFileSync(path.join(contentDir, 'bio.md'), 'utf8');
 
   return (
-    <ClientOrchestrator 
-      educationContent={educationContent} 
-      projectsContent={projectsContent} 
+    <ClientOrchestrator
+      educationContent={educationContent}
+      projectsContent={projectsContent}
+      bioContent={bioContent}
     />
   );
 }

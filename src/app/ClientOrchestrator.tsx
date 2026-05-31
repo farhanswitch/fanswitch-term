@@ -7,9 +7,14 @@ import { Terminal } from '@/components/terminal/terminal';
 interface ClientOrchestratorProps {
   educationContent: string;
   projectsContent: string;
+  bioContent: string;
 }
 
-export default function ClientOrchestrator({ educationContent, projectsContent }: ClientOrchestratorProps) {
+export default function ClientOrchestrator({
+  educationContent,
+  projectsContent,
+  bioContent,
+}: ClientOrchestratorProps) {
   const [isGameCompleted, setIsGameCompleted] = useState(false);
   const [isFading, setIsFading] = useState(false);
 
@@ -23,7 +28,11 @@ export default function ClientOrchestrator({ educationContent, projectsContent }
   if (isGameCompleted) {
     return (
       <div className="animate-in fade-in duration-700">
-        <Terminal educationContent={educationContent} projectsContent={projectsContent} />
+        <Terminal
+          educationContent={educationContent}
+          projectsContent={projectsContent}
+          bioContent={bioContent}
+        />
       </div>
     );
   }

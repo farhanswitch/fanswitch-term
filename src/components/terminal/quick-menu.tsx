@@ -7,9 +7,12 @@ interface QuickMenuProps {
 
 const MACROS = [
   { key: '1', label: 'Help', command: '/help' },
-  { key: '2', label: 'Education', command: '/education' },
-  { key: '3', label: 'Projects', command: '/projects' },
-  { key: '4', label: 'Clear', command: '/clear' },
+  { key: '2', label: 'Bio', command: '/bio' },
+  { key: '3', label: 'Education', command: '/education' },
+  { key: '4', label: 'Projects', command: '/projects' },
+  { key: '5', label: 'CV', command: '/cv' },
+  { key: '6', label: 'Socials', command: '/socials' },
+  { key: '7', label: 'Clear', command: '/clear' },
 ];
 
 export function QuickMenu({ onCommand, disabled }: QuickMenuProps) {
