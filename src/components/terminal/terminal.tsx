@@ -12,6 +12,7 @@ import { QuickMenu } from "./quick-menu";
 import { SocialsOutput } from "./socials-output";
 import { CvOutput } from "./cv-output";
 import { SudoRmOutput } from "./sudo-rm";
+import { MatrixOutput } from "./matrix-output";
 
 interface TerminalLog {
   id: string;
@@ -34,13 +35,17 @@ function nextId() {
 
 const HELP_TEXT = `Available commands:
 
-  /help        — Show this help menu
-  /bio         — About me
-  /education   — View education background
-  /projects    — View project portfolio
-  /cv          — Download my Curriculum Vitae
-  /socials     — Social links & contact
-  /clear       — Clear terminal history
+  /help          — Show this help menu
+  /bio           — About me
+  /education     — View education background
+  /projects      — View project portfolio
+  /cv            — Download my Curriculum Vitae
+  /socials       — Social links & contact
+  /clear         — Clear terminal history
+
+Easter Eggs:
+  /matrix        — Initialize secure proxy routing...
+  /sudo rm -rf / — Do not type this. Seriously.
 
 Tip: Click the quick buttons below or type a command.`;
 
@@ -148,6 +153,11 @@ export function Terminal({
               }}
             />
           );
+          break;
+        case "/matrix":
+        case "/hack":
+          outputContent = "> Initializing secure proxy routing...";
+          richContent = <MatrixOutput onComplete={handleStreamComplete} />;
           break;
         default:
           outputContent = `Command not found: "${trimmed}"\nType /help to see available commands.`;
