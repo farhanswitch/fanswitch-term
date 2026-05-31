@@ -47,3 +47,4 @@ tictactoe/
 # agents
 .antigravitycli/
 .claude/
+.prompts/
