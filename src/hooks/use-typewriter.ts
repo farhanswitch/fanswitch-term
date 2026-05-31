@@ -29,6 +29,7 @@ export function useTypewriter({ text, speed = 12, startDelay = 0, onComplete }: 
 
   useEffect(() => {
     indexRef.current = 0;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDisplayedText('');
     setIsTyping(true);
     setIsComplete(false);

@@ -121,11 +121,11 @@ export function Terminal({
           break;
         case "/cv":
           outputContent = "# Curriculum Vitae";
-          richContent = <CvOutput />;
+          richContent = <CvOutput onComplete={handleStreamComplete} />;
           break;
         case "/socials":
           outputContent = "# Socials & Contact";
-          richContent = <SocialsOutput />;
+          richContent = <SocialsOutput onComplete={handleStreamComplete} />;
           break;
         default:
           outputContent = `Command not found: "${trimmed}"\nType /help to see available commands.`;
@@ -144,7 +144,7 @@ export function Terminal({
       setLogs((prev) => [...prev, inputLog, outputLog]);
       setInput("");
     },
-    [educationContent, projectsContent, bioContent],
+    [educationContent, projectsContent, bioContent, handleStreamComplete],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -231,7 +231,17 @@ export function Terminal({
                   <TypewriterText
                     text={log.content}
                     speed={10}
-                    onComplete={handleStreamComplete}
+                    onComplete={() => {
+                      if (log.richContent) {
+                        setLogs((prev) =>
+                          prev.map((l) =>
+                            l.id === log.id ? { ...l, isStreaming: false } : l
+                          )
+                        );
+                      } else {
+                        handleStreamComplete();
+                      }
+                    }}
                     className="text-emerald-400/90"
                   />
                 ) : (

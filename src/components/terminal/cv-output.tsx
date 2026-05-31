@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTypewriter } from "@/hooks/use-typewriter";
 import {
   Dialog,
   DialogContent,
@@ -12,8 +13,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { FileText, Download } from "lucide-react";
 
-export function CvOutput() {
+interface CvOutputProps {
+  onComplete?: () => void;
+}
+
+export function CvOutput({ onComplete }: CvOutputProps) {
   const [open, setOpen] = useState(false);
+  const { displayedText, isTyping } = useTypewriter({
+    text: "This document details my professional experience, education, and technical skills. It's a comprehensive overview of my journey as a Backend Developer.",
+    speed: 8,
+    onComplete,
+  });
 
   const handleDownload = () => {
     // Programmatically trigger download
@@ -28,14 +38,16 @@ export function CvOutput() {
 
   return (
     <div className="flex flex-col items-start gap-4 py-2">
-      <p className="text-zinc-400 font-mono text-sm leading-relaxed max-w-lg">
-        This document details my professional experience, education, and
-        technical skills. It's a comprehensive overview of my journey as a
-        Backend Developer.
+      <p className="text-zinc-400 font-mono text-sm leading-relaxed max-w-lg min-h-[3rem]">
+        {displayedText}
+        {isTyping && (
+          <span className="inline-block w-1 h-3.5 bg-emerald-500/60 ml-1 animate-pulse" />
+        )}
       </p>
 
       <button
         onClick={() => setOpen(true)}
+        disabled={isTyping}
         className="
           group inline-flex items-center gap-2
           px-4 py-2
@@ -46,6 +58,7 @@ export function CvOutput() {
           hover:text-emerald-400 hover:border-emerald-400/40 hover:bg-emerald-400/5
           focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400/50
           active:scale-[0.97]
+          disabled:opacity-0 disabled:translate-y-2
         "
       >
         <FileText className="size-4 text-zinc-500 group-hover:text-emerald-400/70 transition-colors" />
@@ -68,7 +81,7 @@ export function CvOutput() {
             </DialogTitle>
             <DialogDescription className="text-zinc-400 text-sm leading-relaxed mt-2">
               Are you sure you want to download my Curriculum Vitae? The file
-              "3-CV-Muhammad Farhan.pdf" will be saved to your device.
+              &quot;3-CV-Muhammad Farhan.pdf&quot; will be saved to your device.
             </DialogDescription>
           </DialogHeader>
 

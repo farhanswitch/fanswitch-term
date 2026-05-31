@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Mail, Globe } from 'lucide-react';
 
 // ── Brand SVG Icons (Lucide doesn't ship brand icons) ──────────────
@@ -80,24 +80,45 @@ export const SOCIAL_LINKS: SocialLink[] = [
 
 // ── Rendered Component ─────────────────────────────────────────────
 
-export function SocialsOutput() {
+interface SocialsOutputProps {
+  onComplete?: () => void;
+}
+
+export function SocialsOutput({ onComplete }: SocialsOutputProps) {
+  const [visibleCount, setVisibleCount] = useState(0);
+
+  useEffect(() => {
+    if (visibleCount < SOCIAL_LINKS.length) {
+      const timer = setTimeout(() => {
+        setVisibleCount((prev) => prev + 1);
+      }, 150);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        onComplete?.();
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [visibleCount, onComplete]);
+
   return (
     <div className="flex flex-col gap-1.5 py-1">
-      {SOCIAL_LINKS.map((link) => (
+      {SOCIAL_LINKS.map((link, i) => (
         <a
           key={link.label}
           href={link.url}
           target={link.url.startsWith('mailto:') ? undefined : '_blank'}
           rel="noopener noreferrer"
-          className="
+          className={`
             group inline-flex items-center gap-3
             py-1.5 px-3
             rounded-md
             text-sm font-mono
             text-zinc-400
-            transition-all duration-150
+            transition-all duration-300
             hover:text-emerald-400 hover:bg-emerald-400/5
-          "
+            ${i < visibleCount ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'}
+          `}
         >
           <span className="text-zinc-600 group-hover:text-emerald-400/70 transition-colors shrink-0">
             {link.icon}
