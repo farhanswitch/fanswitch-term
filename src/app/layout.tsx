@@ -15,10 +15,17 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Developer Portfolio — Interactive Terminal",
+  title: "FarhanSwitchTerm — Interactive Terminal",
   description:
     "An interactive developer portfolio featuring a Tic Tac Toe gateway and a Claude Code-style terminal interface. Built with Next.js, TypeScript, and TailwindCSS.",
-  keywords: ["developer", "portfolio", "backend", "engineer", "terminal", "interactive"],
+  keywords: [
+    "developer",
+    "portfolio",
+    "backend",
+    "engineer",
+    "terminal",
+    "interactive",
+  ],
 };
 
 export default function RootLayout({
@@ -29,7 +36,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("dark h-full antialiased", geistMono.variable, jetbrainsMono.variable)}
+      className={cn(
+        "dark h-full antialiased",
+        geistMono.variable,
+        jetbrainsMono.variable,
+      )}
     >
       <body className="min-h-full flex flex-col bg-[#0a0a0b] text-zinc-300 font-mono">
         {children}

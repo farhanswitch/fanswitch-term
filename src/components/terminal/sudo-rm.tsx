@@ -1,34 +1,37 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { TypewriterText } from './output';
+import { useEffect, useState } from "react";
+import { TypewriterText } from "./output";
 
 interface SudoRmProps {
   onComplete: () => void;
 }
 
 const FILES_TO_DELETE = [
-  'deleting /src/components/terminal/terminal.tsx... [OK]',
-  'deleting /src/components/tic-tac-toe/board.tsx... [OK]',
-  'deleting /src/app/page.tsx... [OK]',
-  'deleting /src/content/bio.md... [OK]',
-  'deleting /src/content/projects.md... [OK]',
-  'deleting /public/test/3-CV-Muhammad Farhan.pdf... [OK]',
-  'deleting /node_modules/... [OK]',
-  'deleting /package.json... [OK]',
-  'deleting /tailwind.config.ts... [OK]',
-  'deleting /tsconfig.json... [OK]',
-  'deleting /.git/HEAD... [OK]',
-  'deleting system32... wait, wrong OS... [OK]',
-  'formatting volume /... [OK]',
+  "deleting /src/components/terminal/terminal.tsx... [OK]",
+  "deleting /src/components/tic-tac-toe/board.tsx... [OK]",
+  "deleting /src/app/page.tsx... [OK]",
+  "deleting /src/content/bio.md... [OK]",
+  "deleting /src/content/projects.md... [OK]",
+  "deleting /public/test/3-CV-Muhammad Farhan.pdf... [OK]",
+  "deleting /public/cv/CV-MuhammadFarhan-BackendDeveloper.pdf... [OK]",
+  "deleting /node_modules/... [OK]",
+  "deleting /package.json... [OK]",
+  "deleting /tailwind.config.ts... [OK]",
+  "deleting /tsconfig.json... [OK]",
+  "deleting /.git/HEAD... [OK]",
+  "deleting system32... wait, wrong OS... [OK]",
+  "formatting volume /... [OK]",
 ];
 
 export function SudoRmOutput({ onComplete }: SudoRmProps) {
   const [lines, setLines] = useState<string[]>([]);
-  const [phase, setPhase] = useState<'deleting' | 'glitch' | 'punchline'>('deleting');
+  const [phase, setPhase] = useState<"deleting" | "glitch" | "punchline">(
+    "deleting",
+  );
 
   useEffect(() => {
-    if (phase !== 'deleting') return;
+    if (phase !== "deleting") return;
 
     const interval = setInterval(() => {
       setLines((prev) => {
@@ -44,22 +47,22 @@ export function SudoRmOutput({ onComplete }: SudoRmProps) {
 
   // Use a separate effect to monitor lines length and trigger glitch
   useEffect(() => {
-    if (phase === 'deleting' && lines.length === FILES_TO_DELETE.length) {
-      const timer = setTimeout(() => setPhase('glitch'), 400);
+    if (phase === "deleting" && lines.length === FILES_TO_DELETE.length) {
+      const timer = setTimeout(() => setPhase("glitch"), 400);
       return () => clearTimeout(timer);
     }
   }, [lines.length, phase]);
 
   useEffect(() => {
-    if (phase === 'glitch') {
+    if (phase === "glitch") {
       const timer = setTimeout(() => {
-        setPhase('punchline');
+        setPhase("punchline");
       }, 1000);
       return () => clearTimeout(timer);
     }
   }, [phase]);
 
-  if (phase === 'punchline') {
+  if (phase === "punchline") {
     return (
       <div className="fixed inset-0 z-50 bg-[#0a0a0b] flex items-center justify-center p-6">
         <div className="max-w-lg w-full">
@@ -84,13 +87,15 @@ export function SudoRmOutput({ onComplete }: SudoRmProps) {
         <div
           key={i}
           className={`${
-            line.includes('wait, wrong OS') ? 'text-amber-500' : 'text-red-500/90'
+            line.includes("wait, wrong OS")
+              ? "text-amber-500"
+              : "text-red-500/90"
           }`}
         >
           {line}
         </div>
       ))}
-      {phase === 'deleting' && lines.length > 0 && (
+      {phase === "deleting" && lines.length > 0 && (
         <span className="inline-block w-2 h-4 bg-red-500 animate-pulse mt-1" />
       )}
     </div>

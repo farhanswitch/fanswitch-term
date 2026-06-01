@@ -28,8 +28,8 @@ export function CvOutput({ onComplete }: CvOutputProps) {
   const handleDownload = () => {
     // Programmatically trigger download
     const link = document.createElement("a");
-    link.href = "/test/3-CV-Muhammad%20Farhan.pdf";
-    link.download = "3-CV-Muhammad Farhan.pdf";
+    link.href = "/cv/CV-MuhammadFarhan-BackendDeveloper.pdf";
+    link.download = "CV-MuhammadFarhan-BackendDeveloper";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -81,7 +81,8 @@ export function CvOutput({ onComplete }: CvOutputProps) {
             </DialogTitle>
             <DialogDescription className="text-zinc-400 text-sm leading-relaxed mt-2">
               Are you sure you want to download my Curriculum Vitae? The file
-              &quot;3-CV-Muhammad Farhan.pdf&quot; will be saved to your device.
+              &quot;CV-MuhammadFarhan-BackendDeveloper.pdf&quot; will be saved
+              to your device.
             </DialogDescription>
           </DialogHeader>
 

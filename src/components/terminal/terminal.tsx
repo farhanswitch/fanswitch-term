@@ -27,6 +27,7 @@ interface TerminalProps {
   educationContent: string;
   projectsContent: string;
   bioContent: string;
+  socialsContent: string;
 }
 
 let logIdCounter = 0;
@@ -61,6 +62,7 @@ export function Terminal({
   educationContent,
   projectsContent,
   bioContent,
+  socialsContent,
 }: TerminalProps) {
   const [logs, setLogs] = useState<TerminalLog[]>([
     { id: nextId(), type: "system", content: WELCOME_TEXT, isStreaming: true },
@@ -142,7 +144,7 @@ export function Terminal({
           break;
         case "/socials":
           outputContent = "# Socials & Contact";
-          richContent = <SocialsOutput onComplete={handleStreamComplete} />;
+          richContent = <SocialsOutput rawContent={socialsContent} onComplete={handleStreamComplete} />;
           break;
         case "sudo rm -rf /":
         case "/sudo rm -rf /":
@@ -225,14 +227,7 @@ I cannot brew coffee, but I can architect highly scalable microservices.`;
       setLogs((prev) => [...prev, inputLog, outputLog]);
       setInput("");
     },
-    [
-      educationContent,
-      projectsContent,
-      bioContent,
-      handleStreamComplete,
-      history,
-      historyIndex,
-    ],
+    [educationContent, projectsContent, bioContent, socialsContent, handleStreamComplete, history, historyIndex],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

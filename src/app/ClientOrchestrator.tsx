@@ -8,12 +8,14 @@ interface ClientOrchestratorProps {
   educationContent: string;
   projectsContent: string;
   bioContent: string;
+  socialsContent: string;
 }
 
 export default function ClientOrchestrator({
   educationContent,
   projectsContent,
   bioContent,
+  socialsContent,
 }: ClientOrchestratorProps) {
   const [isGameCompleted, setIsGameCompleted] = useState(false);
   const [isFading, setIsFading] = useState(false);
@@ -32,6 +34,7 @@ export default function ClientOrchestrator({
           educationContent={educationContent}
           projectsContent={projectsContent}
           bioContent={bioContent}
+          socialsContent={socialsContent}
         />
       </div>
     );

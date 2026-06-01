@@ -1,9 +1,9 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { Mail, Globe } from 'lucide-react';
 
-// ── Brand SVG Icons (Lucide doesn't ship brand icons) ──────────────
+// ── Brand SVG Icons ────────────────────────────────────────────────
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -37,7 +37,20 @@ function XTwitterIcon({ className }: { className?: string }) {
   );
 }
 
-// ── Social Link Data ───────────────────────────────────────────────
+// ── Icon resolver ─────────────────────────────────────────────────
+
+function resolveIcon(label: string): ReactNode {
+  const l = label.toLowerCase();
+  if (l.includes('github'))    return <GithubIcon className="size-4" />;
+  if (l.includes('linkedin'))  return <LinkedinIcon className="size-4" />;
+  if (l.includes('instagram')) return <InstagramIcon className="size-4" />;
+  if (l.includes('twitter') || l.includes('x')) return <XTwitterIcon className="size-4" />;
+  if (l.includes('email') || l.includes('mail')) return <Mail className="size-4" />;
+  return <Globe className="size-4" />;
+}
+
+// ── Parser ─────────────────────────────────────────────────────────
+// Parses lines of the format:  "  Label  → url" or "  Label  → email@example.com"
 
 export interface SocialLink {
   label: string;
@@ -45,50 +58,37 @@ export interface SocialLink {
   icon: ReactNode;
 }
 
-export const SOCIAL_LINKS: SocialLink[] = [
-  {
-    label: 'GitHub',
-    url: 'https://github.com/yourusername',
-    icon: <GithubIcon className="size-4" />,
-  },
-  {
-    label: 'LinkedIn',
-    url: 'https://linkedin.com/in/yourprofile',
-    icon: <LinkedinIcon className="size-4" />,
-  },
-  {
-    label: 'Instagram',
-    url: 'https://instagram.com/yourhandle',
-    icon: <InstagramIcon className="size-4" />,
-  },
-  {
-    label: 'Twitter / X',
-    url: 'https://x.com/yourhandle',
-    icon: <XTwitterIcon className="size-4" />,
-  },
-  {
-    label: 'Email',
-    url: 'mailto:your@email.com',
-    icon: <Mail className="size-4" />,
-  },
-  {
-    label: 'Website',
-    url: 'https://yourwebsite.com',
-    icon: <Globe className="size-4" />,
-  },
-];
+function parseSocialsMarkdown(raw: string): SocialLink[] {
+  if (!raw) return [];
+  return raw
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.includes('→'))
+    .map((line) => {
+      const [labelPart, ...rest] = line.split('→');
+      const label = labelPart.trim();
+      const rawUrl = rest.join('→').trim();
+      // If it looks like a plain email (no mailto:), prepend it
+      const url = rawUrl.includes('@') && !rawUrl.startsWith('mailto:')
+        ? `mailto:${rawUrl}`
+        : rawUrl;
+      return { label, url, icon: resolveIcon(label) };
+    });
+}
 
-// ── Rendered Component ─────────────────────────────────────────────
+// ── Component ──────────────────────────────────────────────────────
 
 interface SocialsOutputProps {
+  rawContent: string;
   onComplete?: () => void;
 }
 
-export function SocialsOutput({ onComplete }: SocialsOutputProps) {
+export function SocialsOutput({ rawContent, onComplete }: SocialsOutputProps) {
+  const links = parseSocialsMarkdown(rawContent);
   const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
-    if (visibleCount < SOCIAL_LINKS.length) {
+    if (visibleCount < links.length) {
       const timer = setTimeout(() => {
         setVisibleCount((prev) => prev + 1);
       }, 150);
@@ -99,11 +99,11 @@ export function SocialsOutput({ onComplete }: SocialsOutputProps) {
       }, 200);
       return () => clearTimeout(timer);
     }
-  }, [visibleCount, onComplete]);
+  }, [visibleCount, links.length, onComplete]);
 
   return (
     <div className="flex flex-col gap-1.5 py-1">
-      {SOCIAL_LINKS.map((link, i) => (
+      {links.map((link, i) => (
         <a
           key={link.label}
           href={link.url}

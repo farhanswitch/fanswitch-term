@@ -1,15 +1,13 @@
 # About Me
 
-Hi, I'm [Your Name] — a Backend Developer and Systems Architect
-based in [Your City, Country].
+Hi, I'm Muhammad Farhan — a Backend Developer 
+based in Jakarta, Indonesia.
 
 I specialize in building scalable distributed systems, designing
 clean API architectures, and writing code that survives production
-at 2 AM. My stack of choice includes Go, TypeScript, Rust, and
-whatever the problem demands.
+at 2 AM. 
 
-When I'm not engineering systems, I'm probably reverse-engineering
-how things work — from compilers to coffee machines.
+I love turning complex logical problems into clean, efficient, and scalable code. My daily toolkit revolves around Node.js, TypeScript, and Go, and I regularly build high-performance systems using ExpressJS, Go-Chi, and Gin Gonic. I also tinker with frontend development using ReactJS to make sure the powerful backends I build interface beautifully with the user. 
 
-I believe great software is built with empathy, precision,
-and an unreasonable attention to detail.
+
+I’m always open to discussing backend architecture, system optimization, or interesting project collaborations, so feel free to explore my work and reach out!

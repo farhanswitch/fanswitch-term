@@ -1,15 +1,22 @@
-'use client';
+"use client";
 
-import { useMinimax } from '@/hooks/use-minimax';
-import { useState, useCallback } from 'react';
-import { GameOverDialog } from './dialog';
+import { useMinimax } from "@/hooks/use-minimax";
+import { useState, useCallback } from "react";
+import { GameOverDialog } from "./dialog";
 
 interface BoardProps {
   onComplete: () => void;
 }
 
 export function Board({ onComplete }: BoardProps) {
-  const { board, handlePlayerMove, result, isXNext, resetGame, triggerComputerFirst } = useMinimax();
+  const {
+    board,
+    handlePlayerMove,
+    result,
+    isXNext,
+    resetGame,
+    triggerComputerFirst,
+  } = useMinimax();
   const [showDialog, setShowDialog] = useState(false);
   const [dialogShown, setDialogShown] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -34,7 +41,7 @@ export function Board({ onComplete }: BoardProps) {
         triggerComputerFirst();
       }
     },
-    [resetGame, triggerComputerFirst]
+    [resetGame, triggerComputerFirst],
   );
 
   const renderCell = (index: number) => {
@@ -46,7 +53,7 @@ export function Board({ onComplete }: BoardProps) {
         key={index}
         onClick={() => handlePlayerMove(index)}
         disabled={!isClickable}
-        aria-label={`Cell ${index + 1}: ${value || 'empty'}`}
+        aria-label={`Cell ${index + 1}: ${value || "empty"}`}
         className={`
           relative aspect-square w-full
           flex items-center justify-center
@@ -54,12 +61,13 @@ export function Board({ onComplete }: BoardProps) {
           border border-zinc-800/60
           text-2xl sm:text-3xl font-mono font-bold
           transition-all duration-150 ease-out
-          ${isClickable
-            ? 'cursor-pointer hover:bg-zinc-800/50 hover:border-zinc-700'
-            : 'cursor-default'
+          ${
+            isClickable
+              ? "cursor-pointer hover:bg-zinc-800/50 hover:border-zinc-700"
+              : "cursor-default"
           }
-          ${value === 'X' ? 'text-zinc-100' : ''}
-          ${value === 'O' ? 'text-emerald-400' : ''}
+          ${value === "X" ? "text-zinc-100" : ""}
+          ${value === "O" ? "text-emerald-400" : ""}
           focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400/50
           active:scale-[0.95]
           disabled:active:scale-100
@@ -81,7 +89,7 @@ export function Board({ onComplete }: BoardProps) {
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 tracking-tight">
-            Your Name
+            Muhammad Farhan
           </h1>
           <p className="text-sm text-zinc-500 mt-1 uppercase tracking-[0.2em]">
             Backend Developer
@@ -147,15 +155,21 @@ export function Board({ onComplete }: BoardProps) {
 
       {/* Status bar */}
       <div className="mb-6 flex items-center gap-3 text-xs text-zinc-500">
-        <span className={`transition-colors ${isXNext && !result ? 'text-zinc-100' : ''}`}>
+        <span
+          className={`transition-colors ${isXNext && !result ? "text-zinc-100" : ""}`}
+        >
           You (X)
         </span>
         <span className="text-zinc-700">vs</span>
-        <span className={`transition-colors ${!isXNext && !result ? 'text-emerald-400' : ''}`}>
+        <span
+          className={`transition-colors ${!isXNext && !result ? "text-emerald-400" : ""}`}
+        >
           Computer (O)
         </span>
         {!isXNext && !result && (
-          <span className="ml-2 text-emerald-500/60 animate-pulse text-[10px]">thinking...</span>
+          <span className="ml-2 text-emerald-500/60 animate-pulse text-[10px]">
+            thinking...
+          </span>
         )}
       </div>
 
@@ -167,7 +181,11 @@ export function Board({ onComplete }: BoardProps) {
       {/* Result tag */}
       {result && (
         <div className="mt-6 text-sm text-zinc-500 animate-in fade-in duration-300">
-          {result === 'draw' ? 'Draw.' : result === 'O' ? 'Computer wins.' : 'You win?!'}
+          {result === "draw"
+            ? "Draw."
+            : result === "O"
+              ? "Computer wins."
+              : "You win?!"}
         </div>
       )}
 

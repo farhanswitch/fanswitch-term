@@ -36,7 +36,7 @@ export function GameOverDialog({ open, result, onClose }: GameOverDialogProps) {
     ? "Let's Talk — Your Tic Tac Toe Drew Me In"
     : "Let's Talk — I Just Lost to Your Portfolio";
 
-  const mailtoHref = `mailto:your@email.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+  const mailtoHref = `mailto:muhammad_farhan@outlook.co.id?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
     "Hi,\n\nI just played the tic-tac-toe on your portfolio and I'm impressed. Let's chat about working together.\n\nBest,",
   )}`;
 
