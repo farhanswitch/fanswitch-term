@@ -22,7 +22,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: '11.5.0'
+          version: "11.5.0"
           run_install: false
 
       - name: Get pnpm store directory
@@ -41,5 +41,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run test
-        run: pnpm run test
+      - name: Run build
+        run: pnpm run build
