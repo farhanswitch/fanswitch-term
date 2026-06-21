@@ -47,7 +47,7 @@ const HELP_TEXT = `Available commands:
 
 Extras:
   /matrix        — Initialize secure proxy routing...
-  /sudo rm -rf / — Do not type this. Seriously.
+  sudo rm -rf / — Do not type this. Seriously.
   /coffee        — I'm a teapot
   /whoami        — Print current user identity
   /theme         — Change terminal theme (e.g., /theme ubuntu, /theme cyberpunk, /theme dracula, /theme default)
@@ -144,7 +144,12 @@ export function Terminal({
           break;
         case "/socials":
           outputContent = "# Socials & Contact";
-          richContent = <SocialsOutput rawContent={socialsContent} onComplete={handleStreamComplete} />;
+          richContent = (
+            <SocialsOutput
+              rawContent={socialsContent}
+              onComplete={handleStreamComplete}
+            />
+          );
           break;
         case "sudo rm -rf /":
         case "/sudo rm -rf /":
@@ -227,7 +232,15 @@ I cannot brew coffee, but I can architect highly scalable microservices.`;
       setLogs((prev) => [...prev, inputLog, outputLog]);
       setInput("");
     },
-    [educationContent, projectsContent, bioContent, socialsContent, handleStreamComplete, history, historyIndex],
+    [
+      educationContent,
+      projectsContent,
+      bioContent,
+      socialsContent,
+      handleStreamComplete,
+      history,
+      historyIndex,
+    ],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
